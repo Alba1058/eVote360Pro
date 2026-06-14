@@ -16,7 +16,6 @@ namespace eVote360Pro.Core.Application.ViewModels.Usuarios
         public required string Contrasena { get; set; }
 
         [Required(ErrorMessage = "El rol es requerido")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido")]
         public required RolUsuario Rol { get; set; }
 
         public int? PartidoPoliticoId { get; set; }

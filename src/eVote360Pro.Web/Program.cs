@@ -1,6 +1,24 @@
+using eVote360Pro.Persistence.Contexts;
+using eVote360Pro.Persistence;
+using eVote360Pro.Core.Application;
+using eVote360Pro.Infraestructure.Shared;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<eVote360ProContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly(typeof(eVote360ProContext).Assembly.FullName)));
+
+builder.Services.AddPersistenceLayerIoc();
+builder.Services.AddApplicationLayerIoc();
+
+builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

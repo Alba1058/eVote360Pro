@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EntitiyConfigurations\**" />
+    <EmbeddedResource Remove="EntitiyConfigurations\**" />
+    <None Remove="EntitiyConfigurations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Contexts\" />
-    <Folder Include="EntitiyConfigurations\" />
     <Folder Include="Migrations\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
@@ -16,6 +21,15 @@
   <ItemGroup>
     <ProjectReference Include="..\eVote360Pro.Application\eVote360Pro.Application.csproj" />
     <ProjectReference Include="..\eVote360Pro.Domain\eVote360Pro.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
