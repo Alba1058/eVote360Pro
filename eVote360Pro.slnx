@@ -1,1 +1,7 @@
-<Solution />
+<Solution>
+  <Project Path="src/eVote360Pro.Application/eVote360Pro.Application.csproj" />
+  <Project Path="src/eVote360Pro.Domain/eVote360Pro.Core.Domain.csproj" />
+  <Project Path="src/eVote360Pro.Infraestructure.Shared/eVote360Pro.Infraestructure.Shared.csproj" />
+  <Project Path="src/eVote360Pro.Persistence/eVote360Pro.Persistence.csproj" />
+  <Project Path="src/eVote360Pro.Web/eVote360Pro.Web.csproj" />
+</Solution>

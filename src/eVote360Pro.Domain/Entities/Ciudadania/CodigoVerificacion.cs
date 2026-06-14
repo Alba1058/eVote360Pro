@@ -9,7 +9,6 @@ namespace eVote360Pro.Core.Domain.Entities.Ciudadania
         public DateTime FechaExpiracion { get; set; }
         public bool Usado { get; set; } = false;
 
-        // Navigation properties
         public int CiudadanoId { get; set; }
         public Ciudadano Ciudadano { get; set; } = null!;
         public int EleccionId { get; set; }

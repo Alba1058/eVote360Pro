@@ -7,7 +7,6 @@ namespace eVote360Pro.Core.Domain.Entities.Partidos
     {
         public TipoCandidatura TipoCandidatura { get; set; }
 
-        // Navigation properties
         public int CandidatoId { get; set; }
         public Candidato Candidato { get; set; } = null!;
         public int PuestoElectivoId { get; set; }

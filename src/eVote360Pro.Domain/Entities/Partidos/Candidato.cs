@@ -8,7 +8,6 @@ namespace eVote360Pro.Core.Domain.Entities.Partidos
         public string Apellido { get; set; } = string.Empty;
         public string? Foto { get; set; }
 
-        // Navigation properties
         public int PartidoPoliticoId { get; set; }
         public PartidoPolitico PartidoPolitico { get; set; } = null!;
         public ICollection<AsignacionCandidatoPuesto> AsignacionesPuestos { get; set; } = new List<AsignacionCandidatoPuesto>();

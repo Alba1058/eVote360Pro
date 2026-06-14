@@ -6,7 +6,6 @@ namespace eVote360Pro.Core.Domain.Entities.Elecciones
     {
         public DateTime FechaVoto { get; set; }
 
-        // Navigation properties
         public int CiudadanoId { get; set; }
         public Ciudadania.Ciudadano Ciudadano { get; set; } = null!;
         public int EleccionId { get; set; }

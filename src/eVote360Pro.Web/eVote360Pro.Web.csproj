@@ -6,4 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eVote360Pro.Application\eVote360Pro.Application.csproj" />
+    <ProjectReference Include="..\eVote360Pro.Infraestructure.Shared\eVote360Pro.Infraestructure.Shared.csproj" />
+    <ProjectReference Include="..\eVote360Pro.Persistence\eVote360Pro.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

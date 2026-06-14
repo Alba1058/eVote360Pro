@@ -6,7 +6,6 @@ namespace eVote360Pro.Core.Domain.Entities.Elecciones
     {
         public bool VotoNulo { get; set; } = false;
 
-        // Navigation properties
         public int VotoId { get; set; }
         public Voto Voto { get; set; } = null!;
         public int? CandidatoId { get; set; }

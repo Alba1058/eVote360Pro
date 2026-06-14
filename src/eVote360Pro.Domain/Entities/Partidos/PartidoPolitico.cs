@@ -8,7 +8,6 @@ namespace eVote360Pro.Core.Domain.Entities.Partidos
         public string Siglas { get; set; } = string.Empty;
         public string? Logo { get; set; }
 
-        // Navigation properties
         public ICollection<Usuarios.Usuario> Usuarios { get; set; } = new List<Usuarios.Usuario>();
         public ICollection<Candidato> Candidatos { get; set; } = new List<Candidato>();
         public ICollection<Alianzas.SolicitudAlianza> SolicitudesEnviadas { get; set; } = new List<Alianzas.SolicitudAlianza>();

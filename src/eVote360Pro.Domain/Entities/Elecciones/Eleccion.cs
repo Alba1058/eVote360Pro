@@ -9,7 +9,6 @@ namespace eVote360Pro.Core.Domain.Entities.Elecciones
         public DateTime Fecha { get; set; }
         public EstadoEleccion Estado { get; set; }
 
-        // Navigation properties
         public ICollection<EleccionPuesto> EleccionesPuestos { get; set; } = new List<EleccionPuesto>();
         public ICollection<Voto> Votos { get; set; } = new List<Voto>();
     }

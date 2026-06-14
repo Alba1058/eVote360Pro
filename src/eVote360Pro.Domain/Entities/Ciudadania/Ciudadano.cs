@@ -9,7 +9,6 @@ namespace eVote360Pro.Core.Domain.Entities.Ciudadania
         public string CorreoElectronico { get; set; } = string.Empty;
         public string NumeroDocumento { get; set; } = string.Empty;
 
-        // Navigation properties
         public ICollection<Elecciones.Voto> Votos { get; set; } = new List<Elecciones.Voto>();
         public ICollection<CodigoVerificacion> CodigosVerificacion { get; set; } = new List<CodigoVerificacion>();
     }

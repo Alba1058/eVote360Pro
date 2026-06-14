@@ -6,7 +6,6 @@ namespace eVote360Pro.Core.Domain.Entities.Alianzas
     {
         public DateTime FechaAceptacion { get; set; }
 
-        // Navigation properties
         public int Partido1Id { get; set; }
         public Partidos.PartidoPolitico Partido1 { get; set; } = null!;
         public int Partido2Id { get; set; }
