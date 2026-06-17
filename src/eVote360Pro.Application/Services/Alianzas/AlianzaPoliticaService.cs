@@ -138,5 +138,25 @@ namespace eVote360Pro.Core.Application.Services.Alianzas
                 return false;
             }
         }
+
+        public async Task<List<AlianzaPoliticaDto>> GetVigentesByPartidoAsync(int partidoPoliticoId)
+        {
+            var all = await _alianzaPoliticaRepository.GetAllWithIncludeAsync(["Partido1", "Partido2"]);
+            var filtradas = all.Where(a => a.IsActive && (a.Partido1Id == partidoPoliticoId || a.Partido2Id == partidoPoliticoId));
+            return _mapper.Map<List<AlianzaPoliticaDto>>(filtradas);
+        }
+
+        public async Task<bool> EliminarAlianzaAsync(int alianzaId, int partidoPoliticoId)
+        {
+            var alianza = await _alianzaPoliticaRepository.GetByIdAsync(alianzaId);
+            if (alianza == null || (!alianza.Partido1Id.Equals(partidoPoliticoId) && !alianza.Partido2Id.Equals(partidoPoliticoId)))
+                return false;
+
+            if (await _alianzaPoliticaRepository.HasAlliedCandidateAssignmentsAsync(alianza.Partido1Id, alianza.Partido2Id))
+                return false;
+
+            await _alianzaPoliticaRepository.DeleteAsync(alianzaId);
+            return true;
+        }
     }
 }

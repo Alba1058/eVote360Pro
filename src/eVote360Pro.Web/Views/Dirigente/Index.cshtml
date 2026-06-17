@@ -1,0 +1,75 @@
+@model eVote360Pro.Core.Application.ViewModels.Dirigente.HomeDirigenteViewModel
+
+@{
+    ViewData["Title"] = "Home - Dirigente Político";
+}
+
+<div class="mb-4">
+    <h1 class="page-title h3">Home del dirigente</h1>
+    <p class="page-subtitle mb-0">Gestione candidatos, alianzas y asignaciones de su partido político.</p>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3 text-center">
+                @if (!string.IsNullOrEmpty(Model.PartidoLogo))
+                {
+                    <img src="@Model.PartidoLogo" class="img-fluid rounded" style="max-height: 140px;" alt="@Model.PartidoSiglas" />
+                }
+                else
+                {
+                    <div class="module-icon mx-auto">
+                        <i class="bi bi-flag-fill"></i>
+                    </div>
+                }
+            </div>
+            <div class="col-md-9">
+                <h2 class="h4 mb-1">@Model.PartidoNombre</h2>
+                <span class="badge bg-primary">@Model.PartidoSiglas</span>
+                <p class="text-muted mt-3 mb-0">Desde este panel puede administrar la configuración electoral de su organización política.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-2 col-6"><div class="stat-card text-center"><div class="stat-value">@Model.CandidatosActivos</div><div class="stat-label">Candidatos activos</div></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card text-center"><div class="stat-value">@Model.CandidatosInactivos</div><div class="stat-label">Candidatos inactivos</div></div></div>
+    <div class="col-md-2 col-6"><div class="stat-card text-center"><div class="stat-value">@Model.AlianzasPoliticas</div><div class="stat-label">Alianzas vigentes</div></div></div>
+    <div class="col-md-3 col-6"><div class="stat-card text-center"><div class="stat-value">@Model.SolicitudesPendientes</div><div class="stat-label">Solicitudes pendientes</div></div></div>
+    <div class="col-md-3 col-6"><div class="stat-card text-center"><div class="stat-value">@Model.CandidatosAsignados</div><div class="stat-label">Candidatos asignados</div></div></div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card module-card h-100">
+            <div class="card-body text-center p-4">
+                <div class="module-icon"><i class="bi bi-person-badge"></i></div>
+                <h5>Candidatos</h5>
+                <p class="text-muted">Registre y mantenga los candidatos de su partido.</p>
+                <a asp-controller="Candidato" asp-action="Index" class="btn btn-outline-primary">Gestionar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card module-card h-100">
+            <div class="card-body text-center p-4">
+                <div class="module-icon"><i class="bi bi-handshake"></i></div>
+                <h5>Alianzas políticas</h5>
+                <p class="text-muted">Solicite, acepte o rechace alianzas con otros partidos.</p>
+                <a asp-controller="Alianza" asp-action="Index" class="btn btn-outline-primary">Gestionar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card module-card h-100">
+            <div class="card-body text-center p-4">
+                <div class="module-icon"><i class="bi bi-diagram-3"></i></div>
+                <h5>Asignar candidato a puesto</h5>
+                <p class="text-muted">Relacione candidatos con los puestos electivos disponibles.</p>
+                <a asp-controller="AsignacionCandidato" asp-action="Index" class="btn btn-outline-primary">Gestionar</a>
+            </div>
+        </div>
+    </div>
+</div>

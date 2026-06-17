@@ -1,0 +1,90 @@
+@model eVote360Pro.Core.Application.ViewModels.Usuarios.SaveUsuarioViewModel
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Editar Usuario</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre</label>
+                        <input asp-for="Nombre" class="form-control" placeholder="Ej: Juan" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Apellido" class="form-label">Apellido</label>
+                        <input asp-for="Apellido" class="form-control" placeholder="Ej: Pérez" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CorreoElectronico" class="form-label">Correo Electrónico</label>
+                        <input asp-for="CorreoElectronico" class="form-control" placeholder="Ej: juan.perez@ejemplo.com" />
+                        <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NombreUsuario" class="form-label">Nombre de Usuario</label>
+                        <input asp-for="NombreUsuario" class="form-control" placeholder="Ej: admin" />
+                        <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="CambiarContrasena" class="form-check-input" type="checkbox" id="cambiarContrasena" />
+                        <label asp-for="CambiarContrasena" class="form-check-label">Cambiar contraseña</label>
+                    </div>
+
+                    <div id="camposContrasena" style="display: none;">
+                        <div class="mb-3">
+                            <label asp-for="Contrasena" class="form-label">Contraseña</label>
+                            <input asp-for="Contrasena" class="form-control" type="password" placeholder="Ingrese una contraseña segura" />
+                            <span asp-validation-for="Contrasena" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmarContrasena" class="form-label">Confirmar Contraseña</label>
+                            <input asp-for="ConfirmarContrasena" class="form-control" type="password" placeholder="Confirme la contraseña" />
+                            <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Rol" class="form-label">Rol</label>
+                        <select asp-for="Rol" class="form-select" asp-items="Html.GetEnumSelectList<eVote360Pro.Core.Domain.Enums.RolUsuario>()"></select>
+                        <span asp-validation-for="Rol" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                        <label asp-for="IsActive" class="form-check-label">Activo</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('cambiarContrasena').addEventListener('change', function() {
+            var camposContrasena = document.getElementById('camposContrasena');
+            camposContrasena.style.display = this.checked ? 'block' : 'none';
+        });
+    </script>
+}

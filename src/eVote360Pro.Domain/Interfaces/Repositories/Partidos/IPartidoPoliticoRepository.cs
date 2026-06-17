@@ -6,5 +6,6 @@ namespace eVote360Pro.Core.Domain.Interfaces.Repositories.Partidos
     {
         Task<PartidoPolitico?> GetBySiglasAsync(string siglas);
         Task<bool> HasActiveCandidatesAsync(int partidoPoliticoId);
+        Task<bool> HasParticipatedInElectionAsync(int partidoPoliticoId);
     }
 }

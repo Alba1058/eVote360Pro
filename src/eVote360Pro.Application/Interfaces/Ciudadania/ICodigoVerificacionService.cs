@@ -11,5 +11,7 @@ namespace eVote360Pro.Core.Application.Interfaces.Ciudadania
         Task<CodigoVerificacionDto?> GetById(int id);
         Task<CodigoVerificacionDto?> GetValidCodeAsync(int ciudadanoId, int eleccionId, string codigo);
         Task<CodigoVerificacionDto?> GenerateCodeAsync(int ciudadanoId, int eleccionId);
+        Task<bool> ValidateCodeAsync(int ciudadanoId, int eleccionId, string codigo);
+        Task<string?> ValidateCodeWithMessageAsync(int ciudadanoId, int eleccionId, string codigo);
     }
 }

@@ -9,7 +9,12 @@ namespace eVote360Pro.Core.Application.Interfaces.Partidos
         Task<bool> DeleteAsync(int id);
         Task<List<CandidatoDto>> GetAll();
         Task<CandidatoDto?> GetById(int id);
+        Task<CandidatoDto?> GetByIdAsync(int id) => GetById(id);
+        Task<List<CandidatoDto>> GetByPartidoPoliticoAsync(int partidoPoliticoId);
+        Task<bool> ActivateAsync(int id);
+        Task<bool> DeactivateAsync(int id);
         Task<bool> HasParticipatedInElectionAsync(int candidatoId);
         Task<bool> IsAssignedToPositionAsync(int candidatoId);
+        Task<bool> HasActiveAssignmentsAsync(int candidatoId) => IsAssignedToPositionAsync(candidatoId);
     }
 }

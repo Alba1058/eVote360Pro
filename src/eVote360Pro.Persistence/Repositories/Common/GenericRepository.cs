@@ -1,4 +1,5 @@
 using eVote360Pro.Core.Domain.Interfaces.Repositories;
+using eVote360Pro.Core.Domain.Common;
 using eVote360Pro.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,17 @@ namespace eVote360Pro.Persistence.Repositories.Common
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
-                _context.Set<TEntity>().Remove(entity);
+                if (entity is BaseEntity baseEntity)
+                {
+                    baseEntity.IsActive = false;
+                    baseEntity.UpdatedAt = DateTime.UtcNow;
+                    _context.Set<TEntity>().Update(entity);
+                }
+                else
+                {
+                    _context.Set<TEntity>().Remove(entity);
+                }
+
                 await _context.SaveChangesAsync();
             }
         }

@@ -1,0 +1,100 @@
+@model eVote360Pro.Core.Application.ViewModels.Elector.ValidarIdentidadViewModel
+
+@{
+    ViewData["Title"] = "Validar Identidad";
+    ViewData["BodyClass"] = "page-elector";
+}
+
+<div class="process-shell">
+    <div class="card process-card">
+        <div class="process-header">
+            <div class="process-kicker">
+                <i class="bi bi-person-vcard"></i>
+                Paso 2 de 5
+            </div>
+            <h1 class="h3">Validación de identidad</h1>
+            <p class="process-subtitle">Suba una imagen frontal y clara de su cédula. El sistema usará OCR para confirmar que el número coincide con el documento ingresado.</p>
+
+            <div class="steps-strip">
+                <div class="step-pill">
+                    <span>Paso 1</span>
+                    <strong>Documento</strong>
+                </div>
+                <div class="step-pill active">
+                    <span>Paso 2</span>
+                    <strong>OCR de cédula</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 3</span>
+                    <strong>Código por correo</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 4</span>
+                    <strong>Selección</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 5</span>
+                    <strong>Confirmación</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <form asp-action="ValidarIdentidad" method="post" enctype="multipart/form-data">
+                        <div class="soft-panel mb-4">
+                            <div class="document-preview mb-3">
+                                <i class="bi bi-credit-card-2-front"></i>
+                                <div>
+                                    <div class="helper-text">Documento ingresado</div>
+                                    <div>@Model.NumeroDocumento</div>
+                                </div>
+                            </div>
+
+                            <input asp-for="NumeroDocumento" type="hidden" />
+                            <input asp-for="CiudadanoId" type="hidden" />
+
+                            <div class="mb-3">
+                                <label asp-for="ImagenCedula" class="form-label">Imagen de la cédula</label>
+                                <input asp-for="ImagenCedula" class="form-control form-control-lg" type="file" accept=".jpg,.jpeg,.png,image/png,image/jpeg" />
+                                <span asp-validation-for="ImagenCedula" class="text-danger"></span>
+                                <div class="helper-text mt-2">Formatos permitidos: `JPG`, `JPEG` y `PNG`.</div>
+                            </div>
+                        </div>
+
+                        <div class="action-bar">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-search-heart"></i> Validar identidad
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-lg">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="soft-panel h-100">
+                        <h5 class="mb-3">Requisitos de la imagen</h5>
+                        <ul class="info-list">
+                            <li>Debe mostrar únicamente la parte frontal de la cédula.</li>
+                            <li>Debe tener buena iluminación y verse completa.</li>
+                            <li>El número de documento debe poder leerse claramente.</li>
+                            <li>No debe estar borrosa, cortada ni demasiado oscura.</li>
+                        </ul>
+
+                        <hr />
+
+                        <h6 class="mb-2">Qué sucede después</h6>
+                        <p class="helper-text mb-0">Si el OCR coincide con su documento, se enviará un código temporal de 6 dígitos al correo registrado para continuar con la votación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

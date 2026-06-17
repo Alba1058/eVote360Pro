@@ -1,0 +1,37 @@
+@model eVote360Pro.Core.Application.Dtos.Usuarios.UsuarioDto
+
+@{
+    ViewData["Title"] = "Desactivar Usuario";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-dash-circle"></i> Desactivar Usuario</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i> ¿Está seguro que desea desactivar el usuario <strong>@Model.NombreUsuario</strong>?
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-3">Nombre</dt>
+                    <dd class="col-sm-9">@Model.Nombre</dd>
+                    <dt class="col-sm-3">Apellido</dt>
+                    <dd class="col-sm-9">@Model.Apellido</dd>
+                    <dt class="col-sm-3">Correo Electrónico</dt>
+                    <dd class="col-sm-9">@Model.CorreoElectronico</dd>
+                    <dt class="col-sm-3">Rol</dt>
+                    <dd class="col-sm-9">@Model.Rol</dd>
+                </dl>
+                <form asp-action="DeactivateConfirmed" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-dash-circle"></i> Confirmar Desactivación
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@ namespace eVote360Pro.Core.Application.Dtos.Partidos
         public string Nombre { get; set; } = string.Empty;
         public string Siglas { get; set; } = string.Empty;
         public string Logo { get; set; } = string.Empty;
+        public string Descripcion { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 }

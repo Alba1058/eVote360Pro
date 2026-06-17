@@ -50,6 +50,7 @@ namespace eVote360Pro.Core.Application
             #region Services IOC - Elecciones
             services.AddTransient<IEleccionService, EleccionService>();
             services.AddTransient<IEleccionPuestoService, EleccionPuestoService>();
+            services.AddTransient<IVotoService, VotoService>();
             #endregion
 
             #region Services IOC - Puestos

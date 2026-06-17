@@ -9,11 +9,16 @@ namespace eVote360Pro.Core.Application.Services.Alianzas
     public class SolicitudAlianzaService : ISolicitudAlianzaService
     {
         private readonly ISolicitudAlianzaRepository _solicitudAlianzaRepository;
+        private readonly IAlianzaPoliticaRepository _alianzaPoliticaRepository;
         private readonly IMapper _mapper;
 
-        public SolicitudAlianzaService(ISolicitudAlianzaRepository solicitudAlianzaRepository, IMapper mapper)
+        public SolicitudAlianzaService(
+            ISolicitudAlianzaRepository solicitudAlianzaRepository,
+            IAlianzaPoliticaRepository alianzaPoliticaRepository,
+            IMapper mapper)
         {
             _solicitudAlianzaRepository = solicitudAlianzaRepository;
+            _alianzaPoliticaRepository = alianzaPoliticaRepository;
             _mapper = mapper;
         }
 
@@ -159,6 +164,42 @@ namespace eVote360Pro.Core.Application.Services.Alianzas
             {
                 return false;
             }
+        }
+
+        public async Task<bool> AceptarAsync(int solicitudId, int partidoReceptorId)
+        {
+            var solicitud = await _solicitudAlianzaRepository.GetByIdAsync(solicitudId);
+            if (solicitud == null || solicitud.PartidoReceptorId != partidoReceptorId
+                || solicitud.Estado != Domain.Enums.EstadoSolicitudAlianza.EnEsperaDeRespuesta)
+                return false;
+
+            solicitud.Estado = Domain.Enums.EstadoSolicitudAlianza.Aceptada;
+            solicitud.UpdatedAt = DateTime.UtcNow;
+            await _solicitudAlianzaRepository.UpdateAsync(solicitud.Id, solicitud);
+
+            await _alianzaPoliticaRepository.AddAsync(new AlianzaPolitica
+            {
+                Partido1Id = solicitud.PartidoSolicitanteId,
+                Partido2Id = solicitud.PartidoReceptorId,
+                SolicitudAlianzaId = solicitud.Id,
+                FechaAceptacion = DateTime.Now,
+                IsActive = true
+            });
+
+            return true;
+        }
+
+        public async Task<bool> RechazarAsync(int solicitudId, int partidoReceptorId)
+        {
+            var solicitud = await _solicitudAlianzaRepository.GetByIdAsync(solicitudId);
+            if (solicitud == null || solicitud.PartidoReceptorId != partidoReceptorId
+                || solicitud.Estado != Domain.Enums.EstadoSolicitudAlianza.EnEsperaDeRespuesta)
+                return false;
+
+            solicitud.Estado = Domain.Enums.EstadoSolicitudAlianza.Rechazada;
+            solicitud.UpdatedAt = DateTime.UtcNow;
+            await _solicitudAlianzaRepository.UpdateAsync(solicitud.Id, solicitud);
+            return true;
         }
     }
 }

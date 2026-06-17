@@ -1,0 +1,98 @@
+@model eVote360Pro.Core.Application.ViewModels.Elector.VerificarCodigoViewModel
+
+@{
+    ViewData["Title"] = "Verificar Código";
+    ViewData["BodyClass"] = "page-elector";
+}
+
+<div class="process-shell">
+    <div class="card process-card">
+        <div class="process-header">
+            <div class="process-kicker">
+                <i class="bi bi-envelope-check"></i>
+                Paso 3 de 5
+            </div>
+            <h1 class="h3">Verificación por correo</h1>
+            <p class="process-subtitle">Se envió un código temporal al correo del ciudadano. Ingréselo exactamente como fue recibido para continuar.</p>
+
+            <div class="steps-strip">
+                <div class="step-pill">
+                    <span>Paso 1</span>
+                    <strong>Documento</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 2</span>
+                    <strong>OCR de cédula</strong>
+                </div>
+                <div class="step-pill active">
+                    <span>Paso 3</span>
+                    <strong>Código por correo</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 4</span>
+                    <strong>Selección</strong>
+                </div>
+                <div class="step-pill">
+                    <span>Paso 5</span>
+                    <strong>Confirmación</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-6">
+                    <form asp-action="VerificarCodigo" method="post" class="h-100">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input asp-for="CiudadanoId" type="hidden" />
+                        <input asp-for="NumeroDocumento" type="hidden" />
+
+                        <div class="soft-panel h-100">
+                            <div class="document-preview mb-3">
+                                <i class="bi bi-person-badge"></i>
+                                <div>
+                                    <div class="helper-text">Documento validado</div>
+                                    <div>@Model.NumeroDocumento</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CodigoVerificacion" class="form-label">Código de verificación</label>
+                                <input asp-for="CodigoVerificacion" class="form-control form-control-lg code-input" placeholder="000000" maxlength="6" autocomplete="one-time-code" />
+                                <span asp-validation-for="CodigoVerificacion" class="text-danger"></span>
+                                <div class="helper-text mt-2">El código es numérico, de 6 dígitos y vence en 5 minutos.</div>
+                            </div>
+
+                            <div class="action-bar mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-patch-check"></i> Validar código
+                                </button>
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-lg">Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="soft-panel h-100">
+                        <h5 class="mb-3">Importante</h5>
+                        <ul class="info-list">
+                            <li>Solo el último código generado será aceptado.</li>
+                            <li>El código puede usarse una sola vez.</li>
+                            <li>Si expira, deberá iniciar una nueva validación para recibir otro.</li>
+                        </ul>
+
+                        <hr />
+
+                        <h6 class="mb-2">Siguiente paso</h6>
+                        <p class="helper-text mb-0">Cuando el código sea correcto, podrá entrar a la boleta y seleccionar un candidato por cada puesto electivo disponible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

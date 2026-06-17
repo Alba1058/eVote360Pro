@@ -1,0 +1,110 @@
+@model eVote360Pro.Core.Application.ViewModels.Administrador.HomeAdminViewModel
+
+@{
+    ViewData["Title"] = "Home - Administrador";
+}
+
+<div class="mb-4">
+    <h1 class="page-title h3">Panel del administrador</h1>
+    <p class="page-subtitle mb-0">Configure el proceso electoral, consulte resúmenes históricos y gestione los módulos del sistema.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-value">@Model.AniosDisponibles.Count</div>
+            <div class="stat-label">Años con elecciones</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-value">@Model.Resumenes.Count</div>
+            <div class="stat-label">Elecciones en el año consultado</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-bar-chart-line"></i> Resumen electoral</span>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">Seleccione un año y presione <strong>Obtener Resumen Electoral</strong>.</p>
+
+        <form asp-action="Index" method="post" class="row g-3 align-items-end mb-4">
+            <div class="col-md-4">
+                <label asp-for="AnioSeleccionado" class="form-label">Año electoral</label>
+                @if (Model.AniosDisponibles.Any())
+                {
+                    <select asp-for="AnioSeleccionado" class="form-select" asp-items="new SelectList(Model.AniosDisponibles.OrderByDescending(a => a))"></select>
+                }
+                else
+                {
+                    <select asp-for="AnioSeleccionado" class="form-select" disabled>
+                        <option value="">No existen elecciones registradas</option>
+                    </select>
+                }
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100" disabled="@(!Model.AniosDisponibles.Any())">
+                    Obtener Resumen Electoral
+                </button>
+            </div>
+        </form>
+
+        @if (!Model.AniosDisponibles.Any())
+        {
+            <div class="alert alert-info mb-0">
+                <i class="bi bi-info-circle"></i> No existen elecciones registradas en el sistema.
+            </div>
+        }
+        else if (Model.Resumenes.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre de la elección</th>
+                            <th>Fecha</th>
+                            <th>Partidos</th>
+                            <th>Candidatos reales</th>
+                            <th>Ciudadanos que votaron</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var resumen in Model.Resumenes)
+                        {
+                            <tr>
+                                <td><strong>@resumen.Nombre</strong></td>
+                                <td>@resumen.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@resumen.CantidadPartidos</td>
+                                <td>@resumen.CantidadCandidatos</td>
+                                <td>@resumen.CantidadCiudadanosVotaron.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (Model.AnioSeleccionado > 0)
+        {
+            <div class="alert alert-warning mb-0">
+                <i class="bi bi-exclamation-triangle"></i> No existen elecciones registradas para el año seleccionado.
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Accesos rápidos</div>
+    <div class="card-body admin-quick-links">
+        <div class="list-group list-group-flush">
+            <a asp-controller="PuestoElectivo" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi bi-briefcase me-2"></i>Puestos electivos</a>
+            <a asp-controller="Ciudadano" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi bi-people me-2"></i>Ciudadanos</a>
+            <a asp-controller="PartidoPolitico" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi bi-flag me-2"></i>Partidos políticos</a>
+            <a asp-controller="Usuario" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi bi-person-gear me-2"></i>Usuarios</a>
+            <a asp-controller="Usuario" asp-action="AsignarDirigentes" class="list-group-item list-group-item-action"><i class="bi bi-person-badge me-2"></i>Asignación de dirigentes políticos</a>
+            <a asp-controller="Eleccion" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi bi-calendar2-check me-2"></i>Elecciones</a>
+        </div>
+    </div>
+</div>

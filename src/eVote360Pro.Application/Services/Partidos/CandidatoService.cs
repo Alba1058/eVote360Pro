@@ -122,5 +122,31 @@ namespace eVote360Pro.Core.Application.Services.Partidos
                 return false;
             }
         }
+
+        public async Task<List<CandidatoDto>> GetByPartidoPoliticoAsync(int partidoPoliticoId)
+        {
+            var all = await _candidatoRepository.GetAllAsync();
+            return _mapper.Map<List<CandidatoDto>>(all.Where(c => c.PartidoPoliticoId == partidoPoliticoId));
+        }
+
+        public async Task<bool> ActivateAsync(int id)
+        {
+            var entity = await _candidatoRepository.GetByIdAsync(id);
+            if (entity == null || entity.IsActive) return false;
+            entity.IsActive = true;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _candidatoRepository.UpdateAsync(id, entity);
+            return true;
+        }
+
+        public async Task<bool> DeactivateAsync(int id)
+        {
+            var entity = await _candidatoRepository.GetByIdAsync(id);
+            if (entity == null || !entity.IsActive) return false;
+            entity.IsActive = false;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _candidatoRepository.UpdateAsync(id, entity);
+            return true;
+        }
     }
 }

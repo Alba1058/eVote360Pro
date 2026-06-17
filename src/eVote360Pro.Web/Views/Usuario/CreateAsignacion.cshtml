@@ -1,0 +1,44 @@
+@model AsignarDirigenteViewModel
+
+@{
+    ViewData["Title"] = "Agregar Asignación";
+    var dirigentes = ViewBag.Dirigentes as List<eVote360Pro.Core.Application.Dtos.Usuarios.UsuarioDto> ?? [];
+    var partidos = ViewBag.Partidos as List<eVote360Pro.Core.Application.Dtos.Partidos.PartidoPoliticoDto> ?? [];
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Agregar asignación de dirigente</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateAsignacion" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="UsuarioId" class="form-label">Dirigente político</label>
+                <select asp-for="UsuarioId" class="form-select" required>
+                    <option value="">Seleccione un dirigente</option>
+                    @foreach (var d in dirigentes)
+                    {
+                        <option value="@d.Id">@d.Nombre @d.Apellido - @d.NombreUsuario</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PartidoPoliticoId" class="form-label">Partido político</label>
+                <select asp-for="PartidoPoliticoId" class="form-select" required>
+                    <option value="">Seleccione un partido</option>
+                    @foreach (var p in partidos)
+                    {
+                        <option value="@p.Id">@p.Nombre (@p.Siglas)</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear asignación</button>
+            <a asp-action="AsignarDirigentes" class="btn btn-secondary">Volver atrás</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,47 @@
+@model eVote360Pro.Core.Application.ViewModels.Usuarios.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="login-shell">
+    <div class="card hero-card">
+        <div class="hero-top text-center">
+            <div class="hero-icon mx-auto">
+                <i class="bi bi-person-lock"></i>
+            </div>
+            <h1 class="h4 mb-1">Acceso administrativo</h1>
+            <p class="mb-0 opacity-75">Administradores y dirigentes políticos</p>
+        </div>
+        <div class="hero-body">
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="NombreUsuario" class="form-label">Nombre de usuario</label>
+                    <input asp-for="NombreUsuario" class="form-control form-control-lg" placeholder="Ingrese su usuario" />
+                    <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Contrasena" class="form-label">Contraseña</label>
+                    <input asp-for="Contrasena" class="form-control form-control-lg" type="password" placeholder="Ingrese su contraseña" />
+                    <span asp-validation-for="Contrasena" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                </button>
+            </form>
+        </div>
+        <div class="card-footer bg-white border-0 text-center py-3">
+            <a asp-controller="Home" asp-action="Index" class="text-decoration-none fw-semibold">
+                <i class="bi bi-arrow-left"></i> Volver al inicio del elector
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

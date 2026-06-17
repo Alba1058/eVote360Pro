@@ -2,11 +2,12 @@ namespace eVote360Pro.Core.Domain.Settings
 {
     public class MailSettings
     {
-        public required string EmailFrom { get; set; }
-        public required string SmtpHost { get; set; }
+        public bool EnableSmtp { get; set; }
+        public string EmailFrom { get; set; } = string.Empty;
+        public string SmtpHost { get; set; } = string.Empty;
         public int SmtpPort { get; set; }
-        public required string SmtpUser { get; set; }
-        public required string SmtpPass { get; set; }
-        public required string DisplayName { get; set; }
+        public string SmtpUser { get; set; } = string.Empty;
+        public string SmtpPass { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = "eVote360 Pro";
     }
 }

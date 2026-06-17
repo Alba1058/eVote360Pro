@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Finalizar Votación";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0 text-center">Confirmar Finalización de Votación</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i> Está a punto de finalizar su proceso de votación. Una vez finalizado, no podrá modificar sus selecciones.
+                </div>
+                
+                <div class="text-center mb-4">
+                    <h5>¿Está seguro que desea finalizar su votación?</h5>
+                </div>
+                
+                <form asp-action="FinalizarVotacionConfirmar" method="post">
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle-fill"></i> Sí, Finalizar Votación
+                        </button>
+                        <a asp-action="PuestosElectivos" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

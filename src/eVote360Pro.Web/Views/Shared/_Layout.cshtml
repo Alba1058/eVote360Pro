@@ -1,47 +1,134 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - eVote360Pro.Web</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - eVote360 Pro</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/eVote360Pro.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="@(ViewData["BodyClass"] ?? "")">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">eVote360Pro.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+            <div class="container-fluid app-container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-check2-square"></i> eVote360 Pro
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        @if (User.Identity?.IsAuthenticated == false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right"></i> Acceder
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+                            if (role == "Administrador")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                                        <i class="bi bi-grid-1x2"></i> Home
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-sliders"></i> Mantenimientos
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" asp-controller="PuestoElectivo" asp-action="Index"><i class="bi bi-briefcase"></i> Puestos Electivos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Ciudadano" asp-action="Index"><i class="bi bi-people"></i> Ciudadanos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="PartidoPolitico" asp-action="Index"><i class="bi bi-flag"></i> Partidos Políticos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Usuario" asp-action="Index"><i class="bi bi-person-gear"></i> Usuarios</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Usuario" asp-action="AsignarDirigentes"><i class="bi bi-person-plus"></i> Asignación de Dirigentes</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Eleccion" asp-action="Index">
+                                        <i class="bi bi-calendar2-check"></i> Elecciones
+                                    </a>
+                                </li>
+                            }
+                            else if (role == "DirigentePolitico")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Dirigente" asp-action="Index">
+                                        <i class="bi bi-grid-1x2"></i> Home
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Candidato" asp-action="Index">
+                                        <i class="bi bi-person-badge"></i> Candidatos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Alianza" asp-action="Index">
+                                        <i class="bi bi-handshake"></i> Alianzas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="AsignacionCandidato" asp-action="Index">
+                                        <i class="bi bi-diagram-3"></i> Asignar Candidato
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link">
+                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <form class="d-inline" asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-link nav-link border-0">
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - eVote360Pro.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main class="app-main">
+        <div class="container app-container app-panel">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill"></i> @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container app-container text-center">
+            <p>&copy; 2026 eVote360 Pro · Sistema de votación electrónica</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

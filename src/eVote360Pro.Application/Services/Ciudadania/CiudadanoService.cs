@@ -3,17 +3,23 @@ using eVote360Pro.Core.Application.Dtos.Ciudadania;
 using eVote360Pro.Core.Application.Interfaces.Ciudadania;
 using eVote360Pro.Core.Domain.Entities.Ciudadania;
 using eVote360Pro.Core.Domain.Interfaces.Repositories.Ciudadania;
+using eVote360Pro.Core.Domain.Interfaces.Repositories.Elecciones;
 
 namespace eVote360Pro.Core.Application.Services.Ciudadania
 {
     public class CiudadanoService : ICiudadanoService
     {
         private readonly ICiudadanoRepository _ciudadanoRepository;
+        private readonly IVotoRepository _votoRepository;
         private readonly IMapper _mapper;
 
-        public CiudadanoService(ICiudadanoRepository ciudadanoRepository, IMapper mapper)
+        public CiudadanoService(
+            ICiudadanoRepository ciudadanoRepository,
+            IVotoRepository votoRepository,
+            IMapper mapper)
         {
             _ciudadanoRepository = ciudadanoRepository;
+            _votoRepository = votoRepository;
             _mapper = mapper;
         }
 
@@ -22,13 +28,10 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
             try
             {
                 Ciudadano entity = _mapper.Map<Ciudadano>(dto);
+                entity.NumeroDocumento = dto.NumeroDocumento.Trim();
+                entity.IsActive = true;
                 Ciudadano? returnEntity = await _ciudadanoRepository.AddAsync(entity);
-                if (returnEntity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<CiudadanoDto>(returnEntity);
+                return returnEntity == null ? null : _mapper.Map<CiudadanoDto>(returnEntity);
             }
             catch (Exception)
             {
@@ -40,14 +43,22 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
         {
             try
             {
-                Ciudadano entity = _mapper.Map<Ciudadano>(dto);
-                Ciudadano? returnEntity = await _ciudadanoRepository.UpdateAsync(entity.Id, entity);
-                if (returnEntity == null)
+                var existing = await _ciudadanoRepository.GetByIdAsync(dto.Id);
+                if (existing == null) return null;
+
+                var participated = await HasParticipatedInElectionAsync(dto.Id);
+                existing.Nombre = dto.Nombre;
+                existing.Apellido = dto.Apellido;
+                existing.CorreoElectronico = dto.CorreoElectronico;
+                existing.IsActive = dto.IsActive;
+                if (!participated)
                 {
-                    return null;
+                    existing.NumeroDocumento = dto.NumeroDocumento.Trim();
                 }
 
-                return _mapper.Map<CiudadanoDto>(returnEntity);
+                existing.UpdatedAt = DateTime.UtcNow;
+                var returnEntity = await _ciudadanoRepository.UpdateAsync(existing.Id, existing);
+                return returnEntity == null ? null : _mapper.Map<CiudadanoDto>(returnEntity);
             }
             catch (Exception)
             {
@@ -73,12 +84,7 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
             try
             {
                 var entity = await _ciudadanoRepository.GetByIdAsync(id);
-                if (entity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<CiudadanoDto>(entity);
+                return entity == null ? null : _mapper.Map<CiudadanoDto>(entity);
             }
             catch (Exception)
             {
@@ -103,13 +109,8 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
         {
             try
             {
-                var entity = await _ciudadanoRepository.GetByNumeroDocumentoAsync(numeroDocumento);
-                if (entity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<CiudadanoDto>(entity);
+                var entity = await _ciudadanoRepository.GetByNumeroDocumentoAsync(numeroDocumento.Trim());
+                return entity == null ? null : _mapper.Map<CiudadanoDto>(entity);
             }
             catch (Exception)
             {
@@ -117,16 +118,54 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
             }
         }
 
+        public async Task<bool> ExistsByNumeroDocumentoAsync(string numeroDocumento, int? excludeId = null)
+        {
+            var entity = await _ciudadanoRepository.GetByNumeroDocumentoAsync(numeroDocumento.Trim());
+            if (entity == null) return false;
+            return excludeId == null || entity.Id != excludeId;
+        }
+
+        public async Task<bool> ExistsByCorreoAsync(string correo, int? excludeId = null)
+        {
+            var all = await _ciudadanoRepository.GetAllAsync();
+            return all.Any(c => c.CorreoElectronico.Equals(correo, StringComparison.OrdinalIgnoreCase)
+                && (excludeId == null || c.Id != excludeId));
+        }
+
+        public async Task<bool> ActivateAsync(int id)
+        {
+            var entity = await _ciudadanoRepository.GetByIdAsync(id);
+            if (entity == null || entity.IsActive) return false;
+            entity.IsActive = true;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _ciudadanoRepository.UpdateAsync(id, entity);
+            return true;
+        }
+
+        public async Task<bool> DeactivateAsync(int id)
+        {
+            var entity = await _ciudadanoRepository.GetByIdAsync(id);
+            if (entity == null || !entity.IsActive) return false;
+            entity.IsActive = false;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _ciudadanoRepository.UpdateAsync(id, entity);
+            return true;
+        }
+
         public async Task<bool> HasVotedInElectionAsync(int ciudadanoId, int eleccionId)
         {
-            try
-            {
-                return await _ciudadanoRepository.HasVotedInElectionAsync(ciudadanoId, eleccionId);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return await _ciudadanoRepository.HasVotedInElectionAsync(ciudadanoId, eleccionId);
+        }
+
+        public async Task<bool> MarkAsVotedAsync(int ciudadanoId, int eleccionId)
+        {
+            return await _ciudadanoRepository.HasVotedInElectionAsync(ciudadanoId, eleccionId);
+        }
+
+        public async Task<bool> HasParticipatedInElectionAsync(int ciudadanoId)
+        {
+            var votos = await _votoRepository.GetAllAsync();
+            return votos.Any(v => v.CiudadanoId == ciudadanoId);
         }
     }
 }

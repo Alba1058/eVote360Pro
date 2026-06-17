@@ -16,6 +16,8 @@ namespace eVote360Pro.Persistence.Repositories.Alianzas
         public async Task<List<SolicitudAlianza>> GetPendingRequestsByReceiverAsync(int partidoReceptorId)
         {
             return await _context.SolicitudAlianzas
+                .Include(s => s.PartidoSolicitante)
+                .Include(s => s.PartidoReceptor)
                 .Where(s => s.PartidoReceptorId == partidoReceptorId && s.Estado == EstadoSolicitudAlianza.EnEsperaDeRespuesta)
                 .ToListAsync();
         }
@@ -23,6 +25,8 @@ namespace eVote360Pro.Persistence.Repositories.Alianzas
         public async Task<List<SolicitudAlianza>> GetRequestsBySenderAsync(int partidoSolicitanteId)
         {
             return await _context.SolicitudAlianzas
+                .Include(s => s.PartidoSolicitante)
+                .Include(s => s.PartidoReceptor)
                 .Where(s => s.PartidoSolicitanteId == partidoSolicitanteId)
                 .ToListAsync();
         }

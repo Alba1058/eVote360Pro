@@ -7,21 +7,19 @@ namespace eVote360Pro.Core.Application.ViewModels.Ciudadania
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El nombre es requerido")]
-        [DataType(DataType.Text)]
-        public required string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El apellido es requerido")]
-        [DataType(DataType.Text)]
-        public required string Apellido { get; set; }
+        public string Apellido { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El correo electrónico es requerido")]
-        [DataType(DataType.EmailAddress)]
-        public required string CorreoElectronico { get; set; }
+        [EmailAddress(ErrorMessage = "Debe ingresar un correo electrónico válido.")]
+        public string CorreoElectronico { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El número de documento es requerido")]
-        [DataType(DataType.Text)]
-        public required string NumeroDocumento { get; set; }
+        public string NumeroDocumento { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+        public bool BloquearDocumento { get; set; }
     }
 }

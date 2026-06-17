@@ -21,7 +21,7 @@ namespace eVote360Pro.Persistence.Repositories.Partidos
         public async Task<bool> IsAssignedToPositionAsync(int candidatoId)
         {
             return await _context.AsignacionCandidatos
-                .AnyAsync(a => a.CandidatoId == candidatoId);
+                .AnyAsync(a => a.CandidatoId == candidatoId && a.IsActive);
         }
     }
 }

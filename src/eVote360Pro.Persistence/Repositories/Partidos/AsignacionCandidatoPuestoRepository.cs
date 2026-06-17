@@ -12,9 +12,30 @@ namespace eVote360Pro.Persistence.Repositories.Partidos
         {
         }
 
+        public override async Task<List<AsignacionCandidatoPuesto>> GetAllAsync()
+        {
+            return await _context.AsignacionCandidatos
+                .Include(a => a.Candidato)
+                .Include(a => a.PuestoElectivo)
+                .Include(a => a.PartidoPolitico)
+                .ToListAsync();
+        }
+
+        public async Task<AsignacionCandidatoPuesto?> GetByIdWithIncludesAsync(int id)
+        {
+            return await _context.AsignacionCandidatos
+                .Include(a => a.Candidato)
+                .Include(a => a.PuestoElectivo)
+                .Include(a => a.PartidoPolitico)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public async Task<List<AsignacionCandidatoPuesto>> GetByPartidoPoliticoAsync(int partidoPoliticoId)
         {
             return await _context.AsignacionCandidatos
+                .Include(a => a.Candidato)
+                .Include(a => a.PuestoElectivo)
+                .Include(a => a.PartidoPolitico)
                 .Where(a => a.PartidoPoliticoId == partidoPoliticoId)
                 .ToListAsync();
         }
@@ -29,6 +50,26 @@ namespace eVote360Pro.Persistence.Repositories.Partidos
         {
             return await _context.AsignacionCandidatos
                 .AnyAsync(a => a.PuestoElectivoId == puestoElectivoId && a.PartidoPoliticoId == partidoPoliticoId);
+        }
+
+        public async Task ActivateAsync(int id)
+        {
+            var entity = await _context.AsignacionCandidatos.FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsActive = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeactivateAsync(int id)
+        {
+            var entity = await _context.AsignacionCandidatos.FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

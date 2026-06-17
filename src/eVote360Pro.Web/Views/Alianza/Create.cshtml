@@ -1,0 +1,41 @@
+@model SaveSolicitudAlianzaViewModel
+
+@{
+    ViewData["Title"] = "Crear Solicitud de Alianza";
+    var partidos = ViewBag.Partidos as List<eVote360Pro.Core.Application.Dtos.Partidos.PartidoPoliticoDto> ?? [];
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Crear Solicitud de Alianza</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3"></div>
+                    <input type="hidden" asp-for="PartidoSolicitanteId" />
+                    <div class="mb-3">
+                        <label asp-for="PartidoReceptorId" class="form-label">Partido político</label>
+                        <select asp-for="PartidoReceptorId" class="form-select" required>
+                            <option value="">Seleccione un partido</option>
+                            @foreach (var p in partidos)
+                            {
+                                <option value="@p.Id">@p.Nombre (@p.Siglas)</option>
+                            }
+                        </select>
+                        <span asp-validation-for="PartidoReceptorId" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Crear solicitud</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

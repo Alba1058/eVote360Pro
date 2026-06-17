@@ -13,5 +13,7 @@ namespace eVote360Pro.Core.Application.Interfaces.Alianzas
         Task<List<SolicitudAlianzaDto>> GetRequestsBySenderAsync(int partidoSolicitanteId);
         Task<bool> HasPendingRequestAsync(int partido1Id, int partido2Id);
         Task<bool> HasActiveAllianceAsync(int partido1Id, int partido2Id);
+        Task<bool> AceptarAsync(int solicitudId, int partidoReceptorId);
+        Task<bool> RechazarAsync(int solicitudId, int partidoReceptorId);
     }
 }

@@ -1,0 +1,37 @@
+@model eVote360Pro.Core.Application.Dtos.Ciudadania.CiudadanoDto
+
+@{
+    ViewData["Title"] = "Activar Ciudadano";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-check-circle"></i> Activar Ciudadano</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i> ¿Está seguro que desea activar al ciudadano <strong>@Model.Nombre @Model.Apellido</strong>?
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-3">Nombre</dt>
+                    <dd class="col-sm-9">@Model.Nombre</dd>
+                    <dt class="col-sm-3">Apellido</dt>
+                    <dd class="col-sm-9">@Model.Apellido</dd>
+                    <dt class="col-sm-3">Correo Electrónico</dt>
+                    <dd class="col-sm-9">@Model.CorreoElectronico</dd>
+                    <dt class="col-sm-3">Número de Documento</dt>
+                    <dd class="col-sm-9">@Model.NumeroDocumento</dd>
+                </dl>
+                <form asp-action="ActivateConfirmed" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Confirmar Activación
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,17 +7,17 @@ namespace eVote360Pro.Core.Application.ViewModels.Partidos
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El nombre del partido es requerido")]
-        [DataType(DataType.Text)]
-        public required string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Las siglas son requeridas")]
-        [DataType(DataType.Text)]
-        public required string Siglas { get; set; }
+        public string Siglas { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El logo es requerido")]
-        [DataType(DataType.Text)]
-        public required string Logo { get; set; }
+        public string Logo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La descripción es requerida")]
+        public string Descripcion { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+        public bool BloquearDatosPrincipales { get; set; }
     }
 }

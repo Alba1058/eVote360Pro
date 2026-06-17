@@ -8,6 +8,7 @@ namespace eVote360Pro.Core.Application.ViewModels.Partidos
         public string? Foto { get; set; }
         public int PartidoPoliticoId { get; set; }
         public string? NombrePartido { get; set; }
+        public string? PuestoElectivoNombre { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -1,0 +1,45 @@
+@model SaveAsignacionCandidatoPuestoViewModel
+
+@{
+    ViewData["Title"] = "Asignar Candidato a Puesto";
+    var candidatos = ViewBag.Candidatos as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? [];
+    var puestos = ViewBag.Puestos as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? [];
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Asignar Candidato a Puesto</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3"></div>
+                    <input type="hidden" asp-for="PartidoPoliticoId" />
+                    <div class="mb-3">
+                        <label asp-for="CandidatoId" class="form-label">Candidato político</label>
+                        <select asp-for="CandidatoId" class="form-select" asp-items="candidatos">
+                            <option value="">Seleccione un candidato</option>
+                        </select>
+                        <span asp-validation-for="CandidatoId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PuestoElectivoId" class="form-label">Puesto electivo</label>
+                        <select asp-for="PuestoElectivoId" class="form-select" asp-items="puestos">
+                            <option value="">Seleccione un puesto electivo</option>
+                        </select>
+                        <span asp-validation-for="PuestoElectivoId" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Crear asignación</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

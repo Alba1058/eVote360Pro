@@ -1,0 +1,86 @@
+@model List<EleccionViewModel>
+
+@{
+    ViewData["Title"] = "Elecciones";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Gestión de Elecciones</h2>
+        @if (!(bool)ViewBag.HayEleccionActiva)
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus"></i> Crear
+            </a>
+        }
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Partidos</th>
+                    <th>Puestos</th>
+                    <th>Ciudadanos que votaron</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eleccion in Model)
+                {
+                    <tr class="@(eleccion.Estado == EstadoEleccion.Activa ? "table-success" : "")">
+                        <td>
+                            <strong>@eleccion.Nombre</strong>
+                            @if (eleccion.Estado == EstadoEleccion.Activa)
+                            {
+                                <span class="badge bg-success ms-1">En curso</span>
+                            }
+                        </td>
+                        <td>@eleccion.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @switch (eleccion.Estado)
+                            {
+                                case EstadoEleccion.Activa:
+                                    <span class="badge bg-success">Activa</span>
+                                    break;
+                                case EstadoEleccion.Pendiente:
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                    break;
+                                case EstadoEleccion.Finalizada:
+                                    <span class="badge bg-secondary">Finalizada</span>
+                                    break;
+                            }
+                        </td>
+                        <td>@eleccion.CantidadPartidos</td>
+                        <td>@eleccion.CantidadPuestos</td>
+                        <td>@eleccion.CantidadCiudadanosVotaron.ToString("N0")</td>
+                        <td>
+                            @if (eleccion.Estado == EstadoEleccion.Pendiente)
+                            {
+                                <a asp-action="Activate" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                            }
+                            else if (eleccion.Estado == EstadoEleccion.Activa)
+                            {
+                                <a asp-action="Finalize" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-danger">Finalizar</a>
+                            }
+                            else if (eleccion.Estado == EstadoEleccion.Finalizada)
+                            {
+                                <a asp-action="Resultados" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-primary">Ver resultados</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No hay elecciones registradas.
+        </div>
+    }
+</div>

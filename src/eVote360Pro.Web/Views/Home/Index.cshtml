@@ -1,8 +1,42 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model eVote360Pro.Core.Application.ViewModels.Elector.VotarViewModel
+
+@{
+    ViewData["Title"] = "Votación Electrónica";
+    ViewData["BodyClass"] = "page-elector";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="elector-shell">
+    <div class="card hero-card">
+        <div class="hero-top text-center">
+            <div class="hero-icon mx-auto">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h1 class="h3 mb-2">Proceso de votación</h1>
+            <p class="mb-0 opacity-75">Ingrese su número de documento para iniciar de forma segura y confidencial.</p>
+        </div>
+        <div class="hero-body">
+            <form asp-action="Votar" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="NumeroDocumento" class="form-label">Número de documento de identidad</label>
+                    <input asp-for="NumeroDocumento" class="form-control form-control-lg" placeholder="Ej: 00112345678" autocomplete="off" />
+                    <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
+                    <div class="form-text">Use el número completo tal como aparece en su cédula, incluyendo ceros iniciales.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-box-arrow-in-right"></i> Votar
+                </button>
+            </form>
+        </div>
+        <div class="card-footer bg-white border-0 text-center py-3">
+            <span class="text-muted">¿Es administrador o dirigente político?</span>
+            <a asp-controller="Account" asp-action="Login" class="fw-bold text-decoration-none ms-1">Acceder</a>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,77 @@
+@model eVote360Pro.Core.Application.ViewModels.Elecciones.SaveEleccionViewModel
+
+@{
+    ViewData["Title"] = "Editar Elección";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Editar Elección</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre de la Elección</label>
+                        <input asp-for="Nombre" class="form-control" placeholder="Ej: Elecciones Generales 2026" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Fecha" class="form-label">Fecha de Realización</label>
+                        <input asp-for="Fecha" class="form-control" type="date" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Puestos Electivos</label>
+                        <div class="border p-3 rounded">
+                            @if (ViewBag.Puestos != null)
+                            {
+                                @foreach (var puesto in ViewBag.Puestos)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input type="checkbox" name="PuestoIds" value="@puesto.Id" class="form-check-input" id="puesto_@puesto.Id" />
+                                        <label class="form-check-label" for="puesto_@puesto.Id">@puesto.Nombre</label>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0">No hay puestos electivos activos disponibles.</p>
+                            }
+                        </div>
+                        <span class="text-danger" id="puestosError"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                        <label asp-for="IsActive" class="form-check-label">Activa</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            var checkedPuestos = document.querySelectorAll('input[name="PuestoIds"]:checked');
+            if (checkedPuestos.length === 0) {
+                e.preventDefault();
+                document.getElementById('puestosError').textContent = 'Debe seleccionar al menos un puesto electivo.';
+            }
+        });
+    </script>
+}

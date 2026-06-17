@@ -22,13 +22,9 @@ namespace eVote360Pro.Core.Application.Services.Puestos
             try
             {
                 PuestoElectivo entity = _mapper.Map<PuestoElectivo>(dto);
+                entity.IsActive = true;
                 PuestoElectivo? returnEntity = await _puestoElectivoRepository.AddAsync(entity);
-                if (returnEntity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<PuestoElectivoDto>(returnEntity);
+                return returnEntity == null ? null : _mapper.Map<PuestoElectivoDto>(returnEntity);
             }
             catch (Exception)
             {
@@ -40,14 +36,24 @@ namespace eVote360Pro.Core.Application.Services.Puestos
         {
             try
             {
-                PuestoElectivo entity = _mapper.Map<PuestoElectivo>(dto);
-                PuestoElectivo? returnEntity = await _puestoElectivoRepository.UpdateAsync(entity.Id, entity);
-                if (returnEntity == null)
+                var existing = await _puestoElectivoRepository.GetByIdAsync(dto.Id);
+                if (existing == null) return null;
+
+                if (await _puestoElectivoRepository.HasParticipatedInElectionAsync(dto.Id))
                 {
-                    return null;
+                    existing.Descripcion = dto.Descripcion;
+                    existing.IsActive = dto.IsActive;
+                }
+                else
+                {
+                    existing.Nombre = dto.Nombre.Trim();
+                    existing.Descripcion = dto.Descripcion;
+                    existing.IsActive = dto.IsActive;
                 }
 
-                return _mapper.Map<PuestoElectivoDto>(returnEntity);
+                existing.UpdatedAt = DateTime.UtcNow;
+                var returnEntity = await _puestoElectivoRepository.UpdateAsync(existing.Id, existing);
+                return returnEntity == null ? null : _mapper.Map<PuestoElectivoDto>(returnEntity);
             }
             catch (Exception)
             {
@@ -73,12 +79,7 @@ namespace eVote360Pro.Core.Application.Services.Puestos
             try
             {
                 var entity = await _puestoElectivoRepository.GetByIdAsync(id);
-                if (entity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<PuestoElectivoDto>(entity);
+                return entity == null ? null : _mapper.Map<PuestoElectivoDto>(entity);
             }
             catch (Exception)
             {
@@ -99,17 +100,18 @@ namespace eVote360Pro.Core.Application.Services.Puestos
             }
         }
 
+        public async Task<List<PuestoElectivoDto>> GetAllActiveAsync()
+        {
+            var all = await GetAll();
+            return all.Where(p => p.IsActive).ToList();
+        }
+
         public async Task<PuestoElectivoDto?> GetByNombreAsync(string nombre)
         {
             try
             {
-                var entity = await _puestoElectivoRepository.GetByNombreAsync(nombre);
-                if (entity == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<PuestoElectivoDto>(entity);
+                var entity = await _puestoElectivoRepository.GetByNombreAsync(nombre.Trim());
+                return entity == null ? null : _mapper.Map<PuestoElectivoDto>(entity);
             }
             catch (Exception)
             {
@@ -117,28 +119,41 @@ namespace eVote360Pro.Core.Application.Services.Puestos
             }
         }
 
+        public async Task<bool> ExistsByNameAsync(string nombre, int? excludeId = null)
+        {
+            var entity = await _puestoElectivoRepository.GetByNombreAsync(nombre.Trim());
+            if (entity == null) return false;
+            return excludeId == null || entity.Id != excludeId;
+        }
+
+        public async Task<bool> ActivateAsync(int id)
+        {
+            var entity = await _puestoElectivoRepository.GetByIdAsync(id);
+            if (entity == null || entity.IsActive) return false;
+            entity.IsActive = true;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _puestoElectivoRepository.UpdateAsync(id, entity);
+            return true;
+        }
+
+        public async Task<bool> DeactivateAsync(int id)
+        {
+            var entity = await _puestoElectivoRepository.GetByIdAsync(id);
+            if (entity == null || !entity.IsActive) return false;
+            entity.IsActive = false;
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _puestoElectivoRepository.UpdateAsync(id, entity);
+            return true;
+        }
+
         public async Task<bool> HasAssignedCandidatesAsync(int puestoElectivoId)
         {
-            try
-            {
-                return await _puestoElectivoRepository.HasAssignedCandidatesAsync(puestoElectivoId);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return await _puestoElectivoRepository.HasAssignedCandidatesAsync(puestoElectivoId);
         }
 
         public async Task<bool> HasParticipatedInElectionAsync(int puestoElectivoId)
         {
-            try
-            {
-                return await _puestoElectivoRepository.HasParticipatedInElectionAsync(puestoElectivoId);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return await _puestoElectivoRepository.HasParticipatedInElectionAsync(puestoElectivoId);
         }
     }
 }

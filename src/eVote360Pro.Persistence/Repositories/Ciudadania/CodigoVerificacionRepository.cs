@@ -21,5 +21,14 @@ namespace eVote360Pro.Persistence.Repositories.Ciudadania
                                           !c.Usado &&
                                           c.FechaExpiracion > DateTime.Now);
         }
+
+        public async Task<CodigoVerificacion?> GetByCiudadanoEleccionAndCodigoAsync(int ciudadanoId, int eleccionId, string codigo)
+        {
+            return await _context.CodigoVerificaciones
+                .OrderByDescending(c => c.FechaGeneracion)
+                .FirstOrDefaultAsync(c => c.CiudadanoId == ciudadanoId &&
+                                          c.EleccionId == eleccionId &&
+                                          c.Codigo == codigo);
+        }
     }
 }

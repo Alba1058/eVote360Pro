@@ -72,7 +72,7 @@ namespace eVote360Pro.Core.Application.Services.Partidos
         {
             try
             {
-                var entity = await _asignacionCandidatoPuestoRepository.GetByIdAsync(id);
+                var entity = await _asignacionCandidatoPuestoRepository.GetByIdWithIncludesAsync(id);
                 if (entity == null)
                 {
                     return null;
@@ -133,6 +133,30 @@ namespace eVote360Pro.Core.Application.Services.Partidos
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public async Task ActivateAsync(int id)
+        {
+            try
+            {
+                await _asignacionCandidatoPuestoRepository.ActivateAsync(id);
+            }
+            catch (Exception)
+            {
+                // Log error if needed
+            }
+        }
+
+        public async Task DeactivateAsync(int id)
+        {
+            try
+            {
+                await _asignacionCandidatoPuestoRepository.DeactivateAsync(id);
+            }
+            catch (Exception)
+            {
+                // Log error if needed
             }
         }
     }

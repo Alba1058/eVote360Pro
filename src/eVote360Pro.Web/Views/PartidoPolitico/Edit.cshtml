@@ -1,0 +1,78 @@
+@model eVote360Pro.Core.Application.ViewModels.Partidos.SavePartidoPoliticoViewModel
+
+@{
+    ViewData["Title"] = "Editar Partido Político";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">Editar partido político</div>
+            <div class="card-body">
+                @if (Model.BloquearDatosPrincipales)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-lock-fill"></i> Este partido ya participó en una elección. No puede modificar el nombre, las siglas ni el logo.
+                    </div>
+                }
+
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Logo" />
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre del partido</label>
+                        <input asp-for="Nombre" class="form-control" readonly="@Model.BloquearDatosPrincipales" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Siglas" class="form-label">Siglas</label>
+                        <input asp-for="Siglas" class="form-control" maxlength="10" readonly="@Model.BloquearDatosPrincipales" />
+                        <span asp-validation-for="Siglas" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Descripcion" class="form-label">Descripción</label>
+                        <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    @if (!Model.BloquearDatosPrincipales)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Logo del partido</label>
+                            <input type="file" name="logoFile" class="form-control" accept="image/*" />
+                            @if (!string.IsNullOrEmpty(Model.Logo))
+                            {
+                                <img src="@Model.Logo" alt="Logo actual" class="img-thumbnail mt-2" style="max-height: 80px;" />
+                            }
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.Logo))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Logo actual</label>
+                            <div><img src="@Model.Logo" alt="Logo" class="img-thumbnail" style="max-height: 80px;" /></div>
+                        </div>
+                    }
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                        <label asp-for="IsActive" class="form-check-label">Activo</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
