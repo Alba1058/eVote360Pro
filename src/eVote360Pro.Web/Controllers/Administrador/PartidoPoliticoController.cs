@@ -37,7 +37,7 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 TempData["Error"] = "No se puede crear un partido político mientras exista una elección activa.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(new SavePartidoPoliticoViewModel { IsActive = true });
+            return View(new SavePartidoPoliticoViewModel { IsActive = false });
         }
 
         [HttpPost]
@@ -81,7 +81,6 @@ namespace eVote360Pro.Web.Controllers.Administrador
             var dto = await _partidoPoliticoService.GetByIdAsync(id);
             if (dto == null) return NotFound();
             var vm = _mapper.Map<SavePartidoPoliticoViewModel>(dto);
-            vm.BloquearDatosPrincipales = await _partidoPoliticoService.HasParticipatedInElectionAsync(id);
             return View(vm);
         }
 
@@ -105,7 +104,6 @@ namespace eVote360Pro.Web.Controllers.Administrador
                      || (logoFile != null && logoFile.Length > 0)))
                 {
                     ModelState.AddModelError(string.Empty, "No se pueden modificar los datos principales de este partido político porque ya participó en una elección.");
-                    model.BloquearDatosPrincipales = true;
                     return View(model);
                 }
             }

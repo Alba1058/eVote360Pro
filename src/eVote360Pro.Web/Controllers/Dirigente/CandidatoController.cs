@@ -41,11 +41,6 @@ namespace eVote360Pro.Web.Controllers.Dirigente
             var candidatos = await _candidatoService.GetByPartidoPoliticoAsync(partidoId.Value);
             var asignaciones = await _asignacionService.GetByPartidoPoliticoAsync(partidoId.Value);
             var vm = _mapper.Map<List<CandidatoViewModel>>(candidatos);
-            foreach (var c in vm)
-            {
-                var asignacion = asignaciones.FirstOrDefault(a => a.CandidatoId == c.Id);
-                c.PuestoElectivoNombre = asignacion?.NombrePuesto ?? "Sin puesto asociado";
-            }
             return View(vm);
         }
 
@@ -60,7 +55,7 @@ namespace eVote360Pro.Web.Controllers.Dirigente
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(new SaveCandidatoViewModel { IsActive = true, PartidoPoliticoId = partidoId.Value });
+            return View(new SaveCandidatoViewModel { IsActive = false, PartidoPoliticoId = partidoId.Value });
         }
 
         [HttpPost]
@@ -107,7 +102,6 @@ namespace eVote360Pro.Web.Controllers.Dirigente
             }
 
             var vm = _mapper.Map<SaveCandidatoViewModel>(dto);
-            vm.BloquearDatosPrincipales = await _candidatoService.HasParticipatedInElectionAsync(id);
             return View(vm);
         }
 

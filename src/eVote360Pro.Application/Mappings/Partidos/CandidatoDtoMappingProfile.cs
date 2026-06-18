@@ -15,7 +15,6 @@ namespace eVote360Pro.Core.Application.Mappings.Partidos
                 .ReverseMap();
 
             CreateMap<CandidatoDto, SaveCandidatoViewModel>()
-                .ForMember(dest => dest.BloquearDatosPrincipales, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

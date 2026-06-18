@@ -17,16 +17,8 @@
 
                     <div class="mb-3">
                         <label asp-for="Nombre" class="form-label">Nombre del Puesto</label>
-                        @if (Model.BloquearNombre)
-                        {
-                            <input asp-for="Nombre" class="form-control" readonly />
-                            <small class="text-warning">No se puede modificar el nombre porque este puesto ya fue utilizado en una elección.</small>
-                        }
-                        else
-                        {
-                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Presidente, Senador, Diputado" />
-                            <span asp-validation-for="Nombre" class="text-danger"></span>
-                        }
+                        <input asp-for="Nombre" class="form-control" placeholder="Ej: Presidente, Senador, Diputado" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">

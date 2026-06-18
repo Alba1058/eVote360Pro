@@ -15,7 +15,6 @@ namespace eVote360Pro.Core.Application.Mappings.Puestos
                 .ReverseMap();
 
             CreateMap<PuestoElectivoDto, SavePuestoElectivoViewModel>()
-                .ForMember(dest => dest.BloquearNombre, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

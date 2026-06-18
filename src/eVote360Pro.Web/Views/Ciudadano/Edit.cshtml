@@ -40,16 +40,8 @@
 
                     <div class="mb-3">
                         <label asp-for="NumeroDocumento" class="form-label">Número de Documento</label>
-                        @if (Model.BloquearDocumento)
-                        {
-                            <input asp-for="NumeroDocumento" class="form-control" readonly />
-                            <small class="text-warning">No se puede modificar el número de documento porque este ciudadano ya participó en una elección.</small>
-                        }
-                        else
-                        {
-                            <input asp-for="NumeroDocumento" class="form-control" placeholder="Ej: 00112345678" />
-                            <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
-                        }
+                        <input asp-for="NumeroDocumento" class="form-control" placeholder="Ej: 00112345678" />
+                        <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
                     </div>
 
                     <div class="form-check mb-4">

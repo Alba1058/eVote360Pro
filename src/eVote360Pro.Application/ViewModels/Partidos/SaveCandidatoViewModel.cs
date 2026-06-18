@@ -17,6 +17,5 @@ namespace eVote360Pro.Core.Application.ViewModels.Partidos
         public int PartidoPoliticoId { get; set; }
 
         public bool IsActive { get; set; } = true;
-        public bool BloquearDatosPrincipales { get; set; }
     }
 }

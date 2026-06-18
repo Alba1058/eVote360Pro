@@ -35,7 +35,7 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 TempData["Error"] = "No se puede crear un ciudadano mientras exista una elección activa.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(new SaveCiudadanoViewModel { IsActive = true });
+            return View(new SaveCiudadanoViewModel { IsActive = false });
         }
 
         [HttpPost]
@@ -73,7 +73,6 @@ namespace eVote360Pro.Web.Controllers.Administrador
             var dto = await _ciudadanoService.GetByIdAsync(id);
             if (dto == null) return NotFound();
             var vm = _mapper.Map<SaveCiudadanoViewModel>(dto);
-            vm.BloquearDocumento = await _ciudadanoService.HasParticipatedInElectionAsync(id);
             return View(vm);
         }
 

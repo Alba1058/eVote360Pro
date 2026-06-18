@@ -9,12 +9,6 @@
         <div class="card">
             <div class="card-header">Editar partido político</div>
             <div class="card-body">
-                @if (Model.BloquearDatosPrincipales)
-                {
-                    <div class="alert alert-warning">
-                        <i class="bi bi-lock-fill"></i> Este partido ya participó en una elección. No puede modificar el nombre, las siglas ni el logo.
-                    </div>
-                }
 
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
@@ -23,13 +17,13 @@
 
                     <div class="mb-3">
                         <label asp-for="Nombre" class="form-label">Nombre del partido</label>
-                        <input asp-for="Nombre" class="form-control" readonly="@Model.BloquearDatosPrincipales" />
+                        <input asp-for="Nombre" class="form-control" />
                         <span asp-validation-for="Nombre" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Siglas" class="form-label">Siglas</label>
-                        <input asp-for="Siglas" class="form-control" maxlength="10" readonly="@Model.BloquearDatosPrincipales" />
+                        <input asp-for="Siglas" class="form-control" maxlength="10" />
                         <span asp-validation-for="Siglas" class="text-danger"></span>
                     </div>
 
@@ -39,24 +33,14 @@
                         <span asp-validation-for="Descripcion" class="text-danger"></span>
                     </div>
 
-                    @if (!Model.BloquearDatosPrincipales)
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Logo del partido</label>
-                            <input type="file" name="logoFile" class="form-control" accept="image/*" />
-                            @if (!string.IsNullOrEmpty(Model.Logo))
-                            {
-                                <img src="@Model.Logo" alt="Logo actual" class="img-thumbnail mt-2" style="max-height: 80px;" />
-                            }
-                        </div>
-                    }
-                    else if (!string.IsNullOrEmpty(Model.Logo))
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Logo actual</label>
-                            <div><img src="@Model.Logo" alt="Logo" class="img-thumbnail" style="max-height: 80px;" /></div>
-                        </div>
-                    }
+                    <div class="mb-3">
+                        <label class="form-label">Logo del partido</label>
+                        <input type="file" name="logoFile" class="form-control" accept="image/*" />
+                        @if (!string.IsNullOrEmpty(Model.Logo))
+                        {
+                            <img src="@Model.Logo" alt="Logo actual" class="img-thumbnail mt-2" style="max-height: 80px;" />
+                        }
+                    </div>
 
                     <div class="form-check mb-4">
                         <input asp-for="IsActive" class="form-check-input" type="checkbox" />

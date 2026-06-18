@@ -15,7 +15,6 @@ namespace eVote360Pro.Core.Application.Mappings.Ciudadania
                 .ReverseMap();
 
             CreateMap<CiudadanoDto, SaveCiudadanoViewModel>()
-                .ForMember(dest => dest.BloquearDocumento, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

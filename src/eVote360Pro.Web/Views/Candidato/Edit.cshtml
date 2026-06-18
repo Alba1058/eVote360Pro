@@ -21,54 +21,28 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label asp-for="Nombre" class="form-label">Nombre</label>
-                                @if (Model.BloquearDatosPrincipales)
-                                {
-                                    <input asp-for="Nombre" class="form-control" readonly />
-                                    <small class="text-warning">No se puede modificar el nombre porque este candidato ya participó en una elección.</small>
-                                }
-                                else
-                                {
-                                    <input asp-for="Nombre" class="form-control" placeholder="Ej: Juan" />
-                                    <span asp-validation-for="Nombre" class="text-danger"></span>
-                                }
+                                <input asp-for="Nombre" class="form-control" placeholder="Ej: Juan" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label asp-for="Apellido" class="form-label">Apellido</label>
-                                @if (Model.BloquearDatosPrincipales)
-                                {
-                                    <input asp-for="Apellido" class="form-control" readonly />
-                                    <small class="text-warning">No se puede modificar el apellido porque este candidato ya participó en una elección.</small>
-                                }
-                                else
-                                {
-                                    <input asp-for="Apellido" class="form-control" placeholder="Ej: Pérez" />
-                                    <span asp-validation-for="Apellido" class="text-danger"></span>
-                                }
+                                <input asp-for="Apellido" class="form-control" placeholder="Ej: Pérez" />
+                                <span asp-validation-for="Apellido" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
-                    @if (!Model.BloquearDatosPrincipales)
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Foto del Candidato</label>
-                            <input type="file" name="fotoFile" class="form-control" accept="image/*" />
-                            @if (!string.IsNullOrEmpty(Model.Foto))
-                            {
-                                <img src="@Model.Foto" alt="Foto actual" class="img-thumbnail mt-2" style="max-height: 80px;" />
-                            }
-                            <small class="text-muted">Formatos: JPG, PNG. Deje vacío para mantener la foto actual.</small>
-                        </div>
-                    }
-                    else if (!string.IsNullOrEmpty(Model.Foto))
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Foto actual</label>
-                            <div><img src="@Model.Foto" alt="Foto" class="img-thumbnail" style="max-height: 80px;" /></div>
-                        </div>
-                    }
+                    <div class="mb-3">
+                        <label class="form-label">Foto del Candidato</label>
+                        <input type="file" name="fotoFile" class="form-control" accept="image/*" />
+                        @if (!string.IsNullOrEmpty(Model.Foto))
+                        {
+                            <img src="@Model.Foto" alt="Foto actual" class="img-thumbnail mt-2" style="max-height: 80px;" />
+                        }
+                        <small class="text-muted">Formatos: JPG, PNG. Deje vacío para mantener la foto actual.</small>
+                    </div>
 
                     <div class="form-check mb-4">
                         <input asp-for="IsActive" class="form-check-input" type="checkbox" />

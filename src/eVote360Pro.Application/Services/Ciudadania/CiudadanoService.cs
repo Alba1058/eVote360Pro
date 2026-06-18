@@ -29,7 +29,7 @@ namespace eVote360Pro.Core.Application.Services.Ciudadania
             {
                 Ciudadano entity = _mapper.Map<Ciudadano>(dto);
                 entity.NumeroDocumento = dto.NumeroDocumento.Trim();
-                entity.IsActive = true;
+                entity.IsActive = dto.IsActive;
                 Ciudadano? returnEntity = await _ciudadanoRepository.AddAsync(entity);
                 return returnEntity == null ? null : _mapper.Map<CiudadanoDto>(returnEntity);
             }

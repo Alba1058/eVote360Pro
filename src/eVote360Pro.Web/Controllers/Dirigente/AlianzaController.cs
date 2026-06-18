@@ -314,8 +314,15 @@ namespace eVote360Pro.Web.Controllers.Dirigente
                 return RedirectToAction(nameof(Index));
             }
 
-            await _solicitudAlianzaService.DeleteAsync(id);
-            TempData["Success"] = "Solicitud de alianza eliminada correctamente.";
+            var ok = await _solicitudAlianzaService.DeleteAsync(id);
+            if (ok)
+            {
+                TempData["Success"] = "Solicitud de alianza eliminada correctamente.";
+            }
+            else
+            {
+                TempData["Error"] = "No fue posible eliminar la solicitud de alianza.";
+            }
             return RedirectToAction(nameof(Index));
         }
 

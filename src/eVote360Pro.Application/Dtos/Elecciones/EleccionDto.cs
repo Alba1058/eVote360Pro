@@ -9,5 +9,8 @@ namespace eVote360Pro.Core.Application.Dtos.Elecciones
         public DateTime Fecha { get; set; }
         public EstadoEleccion Estado { get; set; }
         public bool IsActive { get; set; }
+        public int CantidadPartidos { get; set; }
+        public int CantidadPuestos { get; set; }
+        public int CantidadCiudadanosVotaron { get; set; }
     }
 }

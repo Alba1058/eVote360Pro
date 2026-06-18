@@ -30,7 +30,7 @@ namespace eVote360Pro.Core.Application.Services.Partidos
             {
                 PartidoPolitico entity = _mapper.Map<PartidoPolitico>(dto);
                 entity.Siglas = dto.Siglas.Trim().ToUpperInvariant();
-                entity.IsActive = true;
+                entity.IsActive = dto.IsActive;
                 var returnEntity = await _partidoPoliticoRepository.AddAsync(entity);
                 return returnEntity == null ? null : _mapper.Map<PartidoPoliticoDto>(returnEntity);
             }

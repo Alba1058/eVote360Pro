@@ -22,7 +22,7 @@ namespace eVote360Pro.Core.Application.Services.Puestos
             try
             {
                 PuestoElectivo entity = _mapper.Map<PuestoElectivo>(dto);
-                entity.IsActive = true;
+                entity.IsActive = dto.IsActive;
                 PuestoElectivo? returnEntity = await _puestoElectivoRepository.AddAsync(entity);
                 return returnEntity == null ? null : _mapper.Map<PuestoElectivoDto>(returnEntity);
             }

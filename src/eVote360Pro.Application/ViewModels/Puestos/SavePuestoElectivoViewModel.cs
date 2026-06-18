@@ -13,6 +13,5 @@ namespace eVote360Pro.Core.Application.ViewModels.Puestos
         public string Descripcion { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
-        public bool BloquearNombre { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace eVote360Pro.Persistence.Repositories.Alianzas
             return await _context.SolicitudAlianzas
                 .Include(s => s.PartidoSolicitante)
                 .Include(s => s.PartidoReceptor)
-                .Where(s => s.PartidoReceptorId == partidoReceptorId && s.Estado == EstadoSolicitudAlianza.EnEsperaDeRespuesta)
+                .Where(s => s.PartidoReceptorId == partidoReceptorId && s.Estado == EstadoSolicitudAlianza.EnEsperaDeRespuesta && s.IsActive)
                 .ToListAsync();
         }
 
@@ -27,14 +27,14 @@ namespace eVote360Pro.Persistence.Repositories.Alianzas
             return await _context.SolicitudAlianzas
                 .Include(s => s.PartidoSolicitante)
                 .Include(s => s.PartidoReceptor)
-                .Where(s => s.PartidoSolicitanteId == partidoSolicitanteId)
+                .Where(s => s.PartidoSolicitanteId == partidoSolicitanteId && s.IsActive)
                 .ToListAsync();
         }
 
         public async Task<bool> HasPendingRequestAsync(int partido1Id, int partido2Id)
         {
             return await _context.SolicitudAlianzas
-                .AnyAsync(s => s.Estado == EstadoSolicitudAlianza.EnEsperaDeRespuesta &&
+                .AnyAsync(s => s.Estado == EstadoSolicitudAlianza.EnEsperaDeRespuesta && s.IsActive &&
                                ((s.PartidoSolicitanteId == partido1Id && s.PartidoReceptorId == partido2Id) ||
                                 (s.PartidoSolicitanteId == partido2Id && s.PartidoReceptorId == partido1Id)));
         }
@@ -42,7 +42,7 @@ namespace eVote360Pro.Persistence.Repositories.Alianzas
         public async Task<bool> HasActiveAllianceAsync(int partido1Id, int partido2Id)
         {
             return await _context.SolicitudAlianzas
-                .AnyAsync(s => s.Estado == EstadoSolicitudAlianza.Aceptada &&
+                .AnyAsync(s => s.Estado == EstadoSolicitudAlianza.Aceptada && s.IsActive &&
                                ((s.PartidoSolicitanteId == partido1Id && s.PartidoReceptorId == partido2Id) ||
                                 (s.PartidoSolicitanteId == partido2Id && s.PartidoReceptorId == partido1Id)));
         }

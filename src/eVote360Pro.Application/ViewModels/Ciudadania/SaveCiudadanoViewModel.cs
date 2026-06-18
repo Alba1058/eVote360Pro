@@ -20,6 +20,5 @@ namespace eVote360Pro.Core.Application.ViewModels.Ciudadania
         public string NumeroDocumento { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
-        public bool BloquearDocumento { get; set; }
     }
 }

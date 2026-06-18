@@ -41,7 +41,7 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(new SavePuestoElectivoViewModel { IsActive = true });
+            return View(new SavePuestoElectivoViewModel { IsActive = false });
         }
 
         [HttpPost]
@@ -79,7 +79,6 @@ namespace eVote360Pro.Web.Controllers.Administrador
             if (puesto == null) return NotFound();
 
             var vm = _mapper.Map<SavePuestoElectivoViewModel>(puesto);
-            vm.BloquearNombre = await _puestoElectivoService.HasParticipatedInElectionAsync(id);
             return View(vm);
         }
 
@@ -101,7 +100,6 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 if (current != null && !current.Nombre.Equals(model.Nombre.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ModelState.AddModelError(string.Empty, "No se puede modificar el nombre de este puesto electivo porque ya fue utilizado en una elección.");
-                    model.BloquearNombre = true;
                     return View(model);
                 }
             }

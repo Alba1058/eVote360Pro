@@ -44,7 +44,7 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 TempData["Error"] = "No se puede crear un usuario mientras exista una elección activa.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(new SaveUsuarioViewModel { IsActive = true, Rol = RolUsuario.Administrador });
+            return View(new SaveUsuarioViewModel { IsActive = false, Rol = RolUsuario.Administrador });
         }
 
         [HttpPost]

@@ -9,6 +9,7 @@ namespace eVote360Pro.Core.Application.Mappings.Usuarios
         public UsuarioDtoMappingProfile()
         {
             CreateMap<UsuarioDto, UsuarioViewModel>()
+                .ForMember(dest => dest.PartidoPoliticoNombre, opt => opt.MapFrom(src => src.NombrePartido))
                 .ReverseMap();
 
             CreateMap<SaveUsuarioDto, SaveUsuarioViewModel>()

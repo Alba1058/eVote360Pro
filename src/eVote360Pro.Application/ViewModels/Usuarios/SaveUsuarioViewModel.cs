@@ -33,6 +33,8 @@ namespace eVote360Pro.Core.Application.ViewModels.Usuarios
         [Required(ErrorMessage = "El rol es requerido")]
         public RolUsuario Rol { get; set; }
 
+        public int? PartidoPoliticoId { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }

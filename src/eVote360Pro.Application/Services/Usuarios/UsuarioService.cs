@@ -32,7 +32,7 @@ namespace eVote360Pro.Core.Application.Services.Usuarios
                 Usuario entity = _mapper.Map<Usuario>(dto);
                 entity.NombreUsuario = dto.NombreUsuario.Trim();
                 entity.Contrasena = PasswordEncryptation.HashPassword(dto.Contrasena);
-                entity.IsActive = true;
+                entity.IsActive = dto.IsActive;
                 var returnEntity = await _usuarioRepository.AddAsync(entity);
                 return returnEntity == null ? null : await MapUsuarioDtoAsync(returnEntity);
             }

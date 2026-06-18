@@ -18,6 +18,5 @@ namespace eVote360Pro.Core.Application.ViewModels.Partidos
         public string Descripcion { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
-        public bool BloquearDatosPrincipales { get; set; }
     }
 }
