@@ -16,7 +16,8 @@
     <h3 class="mb-3">Solicitudes pendientes de responder</h3>
     @if (Model.SolicitudesPendientes.Any())
     {
-        <table class="table table-striped mb-4">
+        <div class="table-responsive mb-4">
+            <table class="table table-striped">
             <thead><tr><th>Partido solicitante</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
             <tbody>
                 @foreach (var s in Model.SolicitudesPendientes)
@@ -36,6 +37,7 @@
                 }
             </tbody>
         </table>
+        </div>
     }
     else
     {
@@ -53,7 +55,8 @@
     </div>
     @if (Model.SolicitudesEnviadas.Any())
     {
-        <table class="table table-striped mb-4">
+        <div class="table-responsive mb-4">
+            <table class="table table-striped">
             <thead><tr><th>Partido destino</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
             <tbody>
                 @foreach (var s in Model.SolicitudesEnviadas)
@@ -72,6 +75,7 @@
                 }
             </tbody>
         </table>
+        </div>
     }
     else
     {
@@ -81,7 +85,8 @@
     <h3 class="mb-3">Alianzas vigentes</h3>
     @if (Model.AlianzasVigentes.Any())
     {
-        <table class="table table-striped">
+        <div class="table-responsive">
+            <table class="table table-striped">
             <thead><tr><th>Partido aliado</th><th>Fecha de aceptación</th><th>Acciones</th></tr></thead>
             <tbody>
                 @foreach (var a in Model.AlianzasVigentes)
@@ -102,6 +107,7 @@
                 }
             </tbody>
         </table>
+        </div>
     }
     else
     {

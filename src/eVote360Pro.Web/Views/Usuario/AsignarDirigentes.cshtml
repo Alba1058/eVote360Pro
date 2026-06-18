@@ -20,38 +20,44 @@
 
         @if (Model.Any())
         {
-            <table class="table table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Nombre del dirigente político</th>
-                        <th>Nombre de usuario</th>
-                        <th>Partido político asignado</th>
-                        <th>Siglas del partido</th>
-                        <th>Estado del dirigente</th>
-                        <th>Estado del partido</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
                         <tr>
-                            <td>@item.NombreCompleto</td>
-                            <td>@item.NombreUsuario</td>
-                            <td>@item.PartidoNombre</td>
-                            <td>@item.PartidoSiglas</td>
-                            <td>@(item.IsActive ? "Activo" : "Inactivo")</td>
-                            <td>@(item.PartidoActivo ? "Activo" : "Inactivo")</td>
-                            <td>
-                                @if (!(bool)ViewBag.HayEleccionActiva)
-                                {
-                                    <a asp-action="EliminarAsignacion" asp-route-id="@item.UsuarioId" class="btn btn-outline-danger btn-sm">Eliminar relación</a>
-                                }
-                            </td>
+                            <th>Nombre del dirigente político</th>
+                            <th>Nombre de usuario</th>
+                            <th>Partido político asignado</th>
+                            <th>Siglas del partido</th>
+                            <th>Estado del dirigente</th>
+                            <th>Estado del partido</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.NombreCompleto</td>
+                                <td>@item.NombreUsuario</td>
+                                <td>@item.PartidoNombre</td>
+                                <td>@item.PartidoSiglas</td>
+                                <td>@(item.IsActive ? "Activo" : "Inactivo")</td>
+                                <td>@(item.PartidoActivo ? "Activo" : "Inactivo")</td>
+                                <td>
+                                    @if (!(bool)ViewBag.HayEleccionActiva)
+                                    {
+                                        <a asp-action="EliminarAsignacion" asp-route-id="@item.UsuarioId" class="btn btn-outline-danger btn-sm">Eliminar relación</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No disponible</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {

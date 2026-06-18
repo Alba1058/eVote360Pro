@@ -25,7 +25,8 @@
 
     @if (Model != null && Model.Any())
     {
-        <table class="table table-striped">
+        <div class="table-responsive">
+            <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nombre del candidato</th>
@@ -68,6 +69,7 @@
                 }
             </tbody>
         </table>
+        </div>
     }
     else
     {
