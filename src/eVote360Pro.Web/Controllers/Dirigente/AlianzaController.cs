@@ -330,7 +330,7 @@ namespace eVote360Pro.Web.Controllers.Dirigente
                 return RedirectToAction(nameof(Index));
             }
 
-            var alianza = await _alianzaPoliticaService.GetByIdAsync(id) ?? await _alianzaPoliticaService.GetById(id);
+            var alianza = await _alianzaPoliticaService.GetById(id);
             if (alianza == null)
             {
                 TempData["Error"] = "La alianza política seleccionada no existe o ya fue eliminada.";

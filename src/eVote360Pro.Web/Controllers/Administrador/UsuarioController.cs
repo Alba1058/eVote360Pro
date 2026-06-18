@@ -66,7 +66,8 @@ namespace eVote360Pro.Web.Controllers.Administrador
                 return View(model);
             }
 
-            if (await _usuarioService.ExistsByCorreoElectronicoAsync(model.CorreoElectronico))
+            var existingUser = await _usuarioService.GetByNombreUsuarioAsync(model.NombreUsuario);
+            if (existingUser != null && existingUser.Id != model.Id && existingUser.CorreoElectronico == model.CorreoElectronico)
             {
                 ModelState.AddModelError(string.Empty, "Ya existe un usuario registrado con este correo electrónico.");
                 return View(model);
